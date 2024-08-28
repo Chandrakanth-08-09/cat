@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Report</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Inspection Report</h1>
+        <h2>Summary</h2>
+        <p>Truck Number: T123</p>
+        <p>Inspected Components: Tyre, Battery</p>
+        <h2>Issues Found</h2>
+        <ul>
+            <li>Front left tyre pressure is below recommended.</li>
+            <li>Battery water level is low.</li>
+        </ul>
+        <h2>Recommended Actions</h2>
+        <p>Adjust tyre pressure and refill battery water.</p>
+        <button onclick="downloadReport()">Download Report</button>
+        <button onclick="emailReport()">Email Report</button>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

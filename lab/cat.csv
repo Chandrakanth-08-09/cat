@@ -1,0 +1,6 @@
+Truck number,model,"tyre pressure (LF, RF, LR, RR)",tyre size,battery make,battery replacement date,battery water level ,engine oil color,brake fluid color
+7301234,cat 1,"(90, 90, 90, 90)",23.5R25,ABC,2025-09,97%,Light amber,Clear to light yellow
+7301235,cat 2,"(115, 115, 120, 120)",37.00R57,CAT,2024-06-12,99%,Light amber,Clear to light yellow
+7301236,cat 3,"(105, 105, 100, 110)",36.0R56,XYZ,2024-01-20,98%,Light amber,Clear
+7301237,cat 4,"(95, 105, 100, 110)",35.0R57,DCA,2023-12-23,96%,Light amber,Clear
+7301238,cat 5,"(105, 115, 120, 110)",28.0R57,QXC,2024-07-09,95%,Light amber,Clear to pale yellow

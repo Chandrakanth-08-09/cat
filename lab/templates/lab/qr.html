@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet"
+		href="style.css">
+	<title>QR Code Scanner / Reader
+	</title>
+    <style>
+        /* style.css file*/
+body {
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	height: 100vh;
+	box-sizing: border-box;
+	text-align: center;
+	background: rgba(188, 255, 191, 0.311);
+}
+.container {
+	width: 100%;
+	max-width: 500px;
+	margin: 5px;
+}
+
+
+
+.section {
+	background-color: #ffffff;
+	padding: 50px 30px;
+	border: 1.5px solid #b2b2b2;
+	border-radius: 0.25em;
+	box-shadow: 0 20px 25px rgba(0, 0, 0, 0.25);
+}
+
+#my-qr-reader {
+	padding: 20px !important;
+	border: 1.5px solid #b2b2b2 !important;
+	border-radius: 8px;
+}
+
+#my-qr-reader img[alt="Info icon"] {
+	display: none;
+}
+
+#my-qr-reader img[alt="Camera based scan"] {
+	width: 100px !important;
+	height: 100px !important;
+}
+
+button {
+	padding: 10px 20px;
+	border: 1px solid #b2b2b2;
+	outline: none;
+	border-radius: 0.25em;
+	color: white;
+	font-size: 15px;
+	cursor: pointer;
+	margin-top: 15px;
+	margin-bottom: 10px;
+	background-color: #008000ad;
+	transition: 0.3s background-color;
+}
+
+button:hover {
+	background-color: #008000;
+}
+
+#html5-qrcode-anchor-scan-type-change {
+	text-decoration: none !important;
+	color: #1d9bf0;
+}
+
+video {
+	width: 100% !important;
+	border: 1px solid #b2b2b2 !important;
+	border-radius: 0.25em;
+}
+
+h1{
+    color:black;
+}
+
+    </style>
+</head>
+
+<body>
+	<div class="container">
+		<h1>Scan QR Codes</h1>
+		<div class="section">
+			<div id="my-qr-reader">
+			</div>
+		</div>
+        <br>
+    <form action="{% url 'inspection' %}">
+            <input style="text-align: center;" type="text" name="text" id="qr-text">
+            <br>
+            <br>
+            <button>proceed</button>
+        </form>	
+
+        
+</div>
+
+    
+
+	<script
+		src="https://unpkg.com/html5-qrcode">
+	</script>
+	<script >
+        // script.js file
+
+function domReady(fn) {
+	if (
+		document.readyState === "complete" ||
+		document.readyState === "interactive"
+	) {
+		setTimeout(fn, 1000);
+	} else {
+		document.addEventListener("DOMContentLoaded", fn);
+	}
+}
+
+domReady(function () {
+
+	// If found you qr code
+	function onScanSuccess(decodeText, decodeResult) {
+		document.getElementById('qr-text').value = "You Qr is : " + decodeText, decodeResult;
+        
+	}
+
+	let htmlscanner = new Html5QrcodeScanner(
+		"my-qr-reader",
+		{ fps: 10, qrbos: 250 }
+	);
+	htmlscanner.render(onScanSuccess);
+});
+
+    </script>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Navigate</title>
+</head>
+<body>
+    <h1>Speech to Navigate Example</h1>
+    <p>Status: <span id="status">Not Listening</span></p>
+    <button id="startButton">Start Speech Recognition</button>
+    <input type="text" id="ok" style="display: none;">
+
+    <script>
+        // Check if the browser supports the Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                document.getElementById('status').textContent = 'Listening...';
+            };
+
+            recognition.onend = () => {
+                document.getElementById('status').textContent = 'Not Listening';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.trim();
+                console.log('Recognized text:', transcript);
+                document.getElementById('status').textContent = `Recognized text: ${transcript}`;
+                document.getElementById('ok').value = transcript
+
+                if (transcript.toLowerCase() === 'ok.') {
+                    console.log('Navigating to nextpage.html');
+                    window.location.href = 'https://google.com'; // Replace with your desired URL
+                }
+            };
+
+            document.getElementById('startButton').addEventListener('click', () => {
+                recognition.start();
+            });
+        } else {
+            alert('Your browser does not support the Web Speech API.');
+        }
+    </script>
+</body>
+</html> -->
+

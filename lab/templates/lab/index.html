@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Page</title>
+  <link rel="stylesheet" href="home.css">
+  <style>
+    body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d0f9dc41;
+  font-family: Arial, sans-serif;
+}
+
+.mainContainer {
+  width: 80%;
+  max-width: 600px; /* Adjust as needed */
+  padding: 20px;
+  background-color: #ffffff; /* White box background */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  display: block;
+  margin: 20px auto; 
+  width: 200px; 
+  cursor: pointer;
+}
+
+.start-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px; 
+}
+
+.start-button {
+  width: 150px;
+  height: 150px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 50px;
+}
+
+.start-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.start-image {
+  width: 200px; 
+  margin-left: 20px; /* Adjust spacing */
+}
+
+  </style>
+</head>
+<body>
+  <div class="mainContainer">
+    <img src="{% static 'lab/logo.png' %}" alt="logo" class="logo">
+    <div class="start-page">
+      <button class="start-button" onclick="navigateToDashboard()">Start</button>
+      <img src="{% static 'lab/img.jpeg' %}" alt="Start Image" class="start-image">
+    </div>
+  </div>
+
+  <script>
+    function navigateToDashboard() {
+      window.location.href = '{% url "qr" %}';
+    }
+  </script>
+</body>
+</html>

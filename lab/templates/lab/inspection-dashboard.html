@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div id="imageUploadSection" class="tab-content">
+                <h1>Image Upload</h1>
+                <div class="circle">
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <label for="imageUpload" class="upload-icon"></label>
+                </div>
+                <button onclick="uploadImage()" class="img_up"><span>Upload</span></button>
+                <div id="imagePreview"></div>
+                <button type="button" class="img_up" onclick="openTab(event, 'tyreForm')"
+                ><span>Proceed</span></button>
+
+            </div>
+            
+            <div id="tyreForm" class="tab-content">
+                <h1>Tyre Inspection</h1>
+                <form>
+                    <label for="lf">Left Front (LF) Pressure:</label>
+                    <input type="text" id="lf" name="lf"><br><br>
+                    <label for="rf">Right Front (RF) Pressure:</label>
+                    <input type="text" id="rf" name="rf"><br><br>
+                    <label for="lr">Left Rear (LR) Pressure:</label>
+                    <input type="text" id="lr" name="lr"><br><br>
+                    <label for="rr">Right Rear (RR) Pressure:</label>
+                    <input type="text" id="rr" name="rr"><br><br>
+                    <button type="button" class="skip" onclick="skipSection()"><span>Skip</span></button>
+                    <button type="button" class="img_up" onclick="openTab(event, 'brakeSection')"><span>Proceed</span></button>
+                </form>
+            </div>
+            
+            <div id="batteryForm" class="tab-content">
+                <h1>Battery Inspection</h1>
+                <form>
+                    <label for="make">Battery Make:</label>
+                    <input type="text" id="make" name="make"><br><br>
+                    <label for="replacement">Replacement Date:</label>
+                    <input type="date" id="replacement" name="replacement"><br><br>
+                    <button type="button" class="skip" onclick="skipSection()"><span>Skip</span></button>
+                    <button type="button" class="img_up" onclick="openTab(event, 'engineSection')"
+                    ><span>Proceed</span></button>                    
+                </form>
+            </div>
+            
+            <div id="brakeSection" class="tab-content">
+                <h1>Brake Inspection</h1>
+                <div class="circle">
+                    <input type="file" id="brakeImageUpload" accept="image/*">
+                    <label for="brakeImageUpload" class="upload-icon"></label>
+                </div>
+                <button onclick="uploadImage()" class="img_up"><span>Upload</span></button>
+                <div id="brakeImagePreview"></div>
+                <button type="button" class="img_up" onclick="openTab(event, 'batteryForm')"
+                ><span>Proceed</span></button>
+
+            </div>
+            
+            <div id="engineSection" class="tab-content">
+                <h1>Engine Inspection</h1>
+                <div class="circle">
+                    <input type="file" id="engineImageUpload" accept="image/*">
+                    <label for="engineImageUpload" class="upload-icon"></label>
+                </div>
+                <button onclick="uploadImage()" class="img_up"><span>Upload</span></button>
+                <div id="engineImagePreview"></div>
+                <button type="button" class="img_up" onclick="downloadReport()"><span>Proceed to Download</span></button>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <button class="tab-btn" onclick="openTab(event, 'imageUploadSection')">Exterior</button>
+            <button class="tab-btn" onclick="openTab(event, 'tyreForm')">Tyre</button>
+            <button class="tab-btn" onclick="openTab(event, 'brakeSection')">Brake</button>
+            <button class="tab-btn" onclick="openTab(event, 'batteryForm')">Battery</button>
+            <button class="tab-btn" onclick="openTab(event, 'engineSection')">Engine</button>
+            <button class="download-btn" onclick="downloadReport()"><span>Download Report</span></button>
+        </div>
+    </div>
+
+    <script>
+                function openTab(event, tabName) {
+          // Hide all tab contents
+          let tabContents = document.querySelectorAll('.tab-content');
+          tabContents.forEach(content => content.classList.remove('active'));
+
+          // Remove 'active' class from all tab buttons
+          let tabButtons = document.querySelectorAll('.tab-btn');
+          tabButtons.forEach(button => button.classList.remove('active'));
+
+          // Show the clicked tab content
+          document.getElementById(tabName).classList.add('active');
+
+          // Add 'active' class to the clicked tab button
+          event.currentTarget.classList.add('active');
+        }
+
+        function uploadImage() {
+          alert("Upload image function triggered!");
+          // Add image upload functionality here
+        }
+
+        function proceed() {
+          alert("Proceed to next step!");
+          // Add functionality to proceed to next inspection step
+        }
+
+        function skipSection() {
+          alert("Skipping this section!");
+          // Add skip functionality here
+        }
+
+
+        // Initialize the first tab as active
+        document.querySelector('.tab-btn').click();
+
+    </script>
+</body>
+</html>

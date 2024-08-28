@@ -1,0 +1,484 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Interface</title>
+    <style>
+        #video {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Camera Interface</h1>
+    <video id="video" autoplay></video>
+    <br>
+    <button id="captureButton">Capture Image</button>
+    <br>
+    <canvas id="canvas" style="display: none;"></canvas>
+    <br>
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+        <input type="hidden" name="image_data" id="imageData">
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('captureButton');
+        const uploadForm = document.getElementById('uploadForm');
+        const imageDataInput = document.getElementById('imageData');
+
+        // Access the user's camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera:', error);
+            });
+
+        // Capture image from camera
+        captureButton.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageDataURL = canvas.toDataURL('image/jpeg'); // Convert to base64
+            imageDataInput.value = imageDataURL;
+            uploadForm.submit(); // Submit form with captured image data
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #d0f9dc41;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        }
+
+        .container {
+        display: flex;
+        width: 80%;
+        height: 90vh;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        }
+
+        .left-panel, .right-panel {
+        padding: 20px;
+        background-color: #fff;
+        }
+
+        .left-panel {
+        flex: 3;
+        padding: 40px;
+        padding-top:50px;
+        background-color: #fff;
+        text-align: center;
+        overflow-y: auto;
+        }
+
+        .right-panel {
+        flex: 1;
+        background-color: #4CAF50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative; /* For positioning the download button */
+        }
+
+        .tab-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-bottom: 1px solid #fff;
+        cursor: pointer;
+        font-size: 16px;
+        text-align: center;
+        outline: none;
+        transition: background-color 0.3s;
+        }
+
+        .tab-btn:hover {
+        background-color: #45a049;
+        }
+
+
+
+        .download-btn {
+        width: 90%;
+        padding: 15px;
+        background-color: white;
+        color: #4CAF50;
+        border: 2px solid #4CAF50;
+        border-radius: 5px;
+        font-weight: bolder;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        border-color: white;
+        border-style: solid;
+        border-width: 5px;
+        transition: all 0.3s;
+        position: absolute;
+        bottom: 20px; /* Position at the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+        }
+
+        .download-btn:hover {
+        background-color: #4CAF50;
+        color: white;
+        }
+        .download-btn span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.3s;
+        }
+
+        .download-btn span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        transition: 0.3s;
+        }
+
+        .download-btn:hover span {
+        padding-right: 25px;
+        background-color: #4CAF50;
+        color: white;
+        }
+
+        .download-btn:hover {
+        background-color: #4CAF50;
+        color: white;
+        }
+
+        .download-btn:hover span:after {
+        opacity: 1;
+        right: 0;
+        }
+        .tab-content {
+        display: block;
+        }
+
+        .tab-content.active {
+        display: block;
+        }
+
+        h1 {
+        color: #4CAF50;
+        margin-bottom: 20px;
+        }
+
+        #video {
+            width: 70%;
+            height: auto;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .circle {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border: 2px dashed #4CAF50;
+        border-radius: 50%;
+        background-color: #d0f9dc41;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 20px;
+        overflow: hidden;
+        }
+
+        input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+        cursor: pointer;
+        }
+
+        .upload-icon {
+        width: 50px;
+        height: 50px;
+        background: url('images/upload_icon.png') no-repeat center center;
+        background-size: contain;
+        pointer-events: none;
+        }
+
+        .img_up {
+        margin-top: 20px;
+        width: 200px;
+        height: 40px;
+        background-color: white;
+        color: #4CAF50;
+        border: 2px solid #4CAF50;
+        border-radius: 5px;
+        font-weight: bolder;
+        cursor: pointer;
+        transition: all 0.3s;
+        }
+
+        .img_up:hover {
+        background-color: #4CAF50;
+        color: white;
+        }
+
+        .img_up span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.3s;
+        }
+
+        .img_up span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        transition: 0.3s;
+        }
+
+        .img_up:hover span {
+        padding-right: 25px;
+        background-color: #4CAF50;
+        color: white;
+        }
+
+        .img_up:hover {
+        background-color: #4CAF50;
+        color: white;
+        }
+
+        .img_up:hover span:after {
+        opacity: 1;
+        right: 0;
+        }
+        .skip{
+        margin-top: 20px;
+        width: 100px;
+        height: 40px;
+        background-color: #4CAF50;
+        color: white;
+        border: 2px solid #4CAF50;
+        border-radius: 5px;
+        font-weight: bolder;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-right: 20px;
+        }
+
+        .tab-btn:nth-child(3){
+            background-color: #59a25b;
+        }
+
+        #imagePreview, #brakeImagePreview, #engineImagePreview {
+        margin-top: 20px;
+        }
+
+        #imagePreview img, #brakeImagePreview img, #engineImagePreview img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a{
+            text-decoration: none;
+            color:white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            
+            
+            <div id="imageUploadSection" class="tab-content">
+                <h1>Brake Fluid Examination</h1>
+                <!-- <form action="{% url 'tires' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="circle">
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <label for="imageUpload" class="upload-icon"></label>
+                    </div>
+                    <button type="submit" class="img_up"><span>Upload</span></button>
+                    <div id="imagePreview"></div>
+                    <button type="button" class="img_up" onclick="openTab(event, 'tyreForm')"><span>Proceed</span></button>
+                </form> -->
+
+                <p>Status: <span id="status">Not Listening</span></p>
+                    <br>
+                    <button id="startButton" style="background-color: #4CAF50; color:white; border:none; padding:10px; font-size: 12px; border-radius: 10px;">Start Speech Recognition</button>
+                    <br>
+                    <input type="text" id="ok" style="display: none;">
+
+                    <br>
+                    <br>
+
+                <video id="video" autoplay></video>
+                    <br>
+                    
+                    <br>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <br>
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="image_data" id="imageData">
+                        
+
+                        <button type="submit" id="captureButton" onclick="openTab(event, 'tyreForm')" class="img_up"><span>Capture</span></button><br>
+                
+                        <a href=""><button type="button" class="img_up" ><span>Proceed</span></button></a>
+                    </form>
+                
+
+            </div>
+            
+        </div>
+
+        <div class="right-panel">
+            <button class="tab-btn" onclick="openTab(event, 'imageUploadSection')"><a href="{% url 'upload_image' %}">Exterior</a></button>
+            <button class="tab-btn" onclick="openTab(event, 'tyreForm')"><a href="{% url 'tires' %}">Tyres</a></button>
+            <button class="tab-btn" onclick="openTab(event, 'brakeSection')"><a href="{% url 'brake' %}">Brake</a></button>
+            <button class="tab-btn" onclick="openTab(event, 'batteryForm')"><a href="{% url 'battery' %}">Battery</a></button>
+            <button class="tab-btn" onclick="openTab(event, 'engineSection')"><a href="{% url 'engine' %}">Engine</a></button>
+            <a href="http://127.0.0.1:8000/media/document.docx"><button class="download-btn" onclick="downloadReport()"><span>Download Report</span></button></a>
+        </div>
+    </div>
+
+    <script>
+                function openTab(event, tabName) {
+          // Hide all tab contents
+          let tabContents = document.querySelectorAll('.tab-content');
+          tabContents.forEach(content => content.classList.remove('active'));
+
+          // Remove 'active' class from all tab buttons
+          let tabButtons = document.querySelectorAll('.tab-btn');
+          tabButtons.forEach(button => button.classList.remove('active'));
+
+          // Show the clicked tab content
+          document.getElementById(tabName).classList.add('active');
+
+          // Add 'active' class to the clicked tab button
+          event.currentTarget.classList.add('active');
+        }
+
+        function uploadImage() {
+          alert("Upload image function triggered!");
+          // Add image upload functionality here
+        }
+
+        function proceed() {
+          alert("Proceed to next step!");
+          // Add functionality to proceed to next inspection step
+        }
+
+        function skipSection() {
+          alert("Skipping this section!");
+          // Add skip functionality here
+        }
+
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('captureButton');
+        const uploadForm = document.getElementById('uploadForm');
+        const imageDataInput = document.getElementById('imageData');
+
+        // Access the user's camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera:', error);
+            });
+
+        // Capture image from camera
+        captureButton.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageDataURL = canvas.toDataURL('image/jpeg'); // Convert to base64
+            imageDataInput.value = imageDataURL;
+            uploadForm.submit(); // Submit form with captured image data
+        });
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = () => {
+                document.getElementById('status').textContent = 'Listening...';
+            };
+
+            recognition.onend = () => {
+                document.getElementById('status').textContent = 'Not Listening';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[event.results.length - 1][0].transcript.trim();
+                console.log('Recognized text:', transcript);
+                document.getElementById('status').textContent = `Recognized text: ${transcript}`;
+                document.getElementById('ok').value = transcript
+
+                if (transcript.toLowerCase() === 'ok.') {
+                    console.log('Navigating to nextpage.html');
+                    window.location.href = '{% url "battery" %}'; // Replace with your desired URL
+                }
+            };
+
+            document.getElementById('startButton').addEventListener('click', () => {
+                recognition.start();
+            });
+        } else {
+            alert('Your browser does not support the Web Speech API.');
+        }
+
+
+
+        // Initialize the first tab as active
+        document.querySelector('.tab-btn').click();
+
+    </script>
+</body>
+</html>
+
