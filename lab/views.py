@@ -22,7 +22,7 @@ import random
 import pandas as pd
 from docx2pdf import convert
 
-GOOGLE_API_KEY = 'AIzaSyDtiq-CBPFG500PMG_UJtO08wf4EQnz9H4'  # Replace with your actual API key
+GOOGLE_API_KEY = ''  # Replace with your actual API key
 
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
